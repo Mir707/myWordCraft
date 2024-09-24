@@ -45,7 +45,7 @@ const SignIn = () => {
           />
 
           <Text
-            style={tw`text-2xl text-white font-semibold mt-10 mb-4 font-psemibold`}
+            style={tw`text-2xl text-white font-semibold mt-10 mb-4 font-semibold`}
           >
             Log in to WordCraft
           </Text>
@@ -79,7 +79,7 @@ const SignIn = () => {
             </Text>
 
             <Link href="/sign-up" asChild>
-              <Text style={tw`text-lg font-psemibold text-secondary-100`}>
+              <Text style={tw`text-lg font-semibold text-secondary-100`}>
                 Sign Up
               </Text>
             </Link>

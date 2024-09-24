@@ -32,7 +32,7 @@ const FormField: React.FC<FormFieldProps> = ({
           ${isFocused ? 'border-yellow-400' : 'border-gray-400'} bg-purple border-2`}
       >
         <TextInput
-          style={tw`flex-1 text-white font-psemibold text-base`}
+          style={tw`flex-1 text-white font-semibold text-base`}
           value={value}
           placeholder={placeholder}
           placeholderTextColor="#7b7b8b"

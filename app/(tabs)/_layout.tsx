@@ -13,6 +13,7 @@ interface TabIconProps {
 // Create the default style for the tabs component
 const TabIcon: React.FC<TabIconProps> = ({ icon, color, name, focused }) => {
   return (
+    
     <View style={{ alignItems: 'center', justifyContent: 'center', gap: 8 }}>
       <Image
         source={icon}
