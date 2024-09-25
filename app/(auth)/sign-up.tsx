@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import { Link, Href, router } from 'expo-router';
 import { Link, useRouter } from 'expo-router';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc }  from 'firebase/firestore';
+import emailjs from 'emailjs-com'; 
 
 import tw from '../../twrnc-config';
 import { images } from '../../constants';
@@ -22,6 +22,23 @@ const SignUp = () => {
 
   const auth = FIREBASE_AUTH;
   const router = useRouter(); // nagivagte to other pages
+
+    // send email using EmailJS
+    const sendEmail = async (userEmail: string, userName: string, userPassword: string) => {
+      try {
+        const templateParams = {
+          to_email: userEmail,
+          to_name: userName,
+          username: userName,
+          password: userPassword,
+        };
+  
+        await emailjs.send('service_gl03mr3', 'template_nkw0v1q', templateParams, 'QKNgjCB6BbXnGI1Cj');
+        console.log('Email sent successfully');
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
+    };
 
   // function to submit the data to firebase auth
   const submit = async () => {

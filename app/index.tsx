@@ -5,13 +5,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {  Href, router } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 import tw from '../twrnc-config';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
 
 import { images } from '../constants';
 import CustomButton from '../components/CustomButton';
 
 const App: React.FC = () => {
   return (
-    <SafeAreaView style={tw`bg-primary h-full`}>
+    <GestureHandlerRootView style={{ flex: 1}}>
+      <SafeAreaView style={tw`bg-primary h-full`}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={tw`w-full items-center h-full px-4`}>
           <Image
@@ -66,6 +68,7 @@ const App: React.FC = () => {
 
       {/* <StatusBar backgroundColor='#161622' style='light'/> */}
     </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 

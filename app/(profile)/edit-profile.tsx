@@ -7,12 +7,14 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import * as ImagePicker from 'expo-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker'
+import { createStackNavigator } from '@react-navigation/stack';
 
 import { FIREBASE_AUTH, FIREBASE_DB, FIREBASE_SR } from '@/firebaseConfig'
 import CustomButton from '@/components/CustomButton'
 import tw from '@/twrnc-config'
 import { FontAwesome } from '@expo/vector-icons'
 
+const Stack = createStackNavigator();
 
 const EditProfile = () => {
   // state to hold data
@@ -123,11 +125,15 @@ const EditProfile = () => {
 
   return (
     <SafeAreaView style={tw`bg-purple-200 h-full flex-1`}>
-      <ScrollView contentContainerStyle={tw`p-4`}>
-        <View style={tw`flex-row items-center mb-5`}>
-          <Text style={tw`text-3xl font-bold`}>Edit Profile</Text>
-        </View>
+      <View style={tw`bg-primary py-4 px-4 flex-row items-center mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
+          <FontAwesome name='arrow-left' size={24} color='white' />
+        </TouchableOpacity>
+        <Text style={tw`text-white text-3xl font-bold`}>Edit Profile</Text>
+      </View>
 
+
+      <ScrollView contentContainerStyle={tw`p-4`}>
         <View>
           {/* profile picture */}
         <TouchableOpacity onPress={handleImagePick} style={tw`items-center mb-4`}>

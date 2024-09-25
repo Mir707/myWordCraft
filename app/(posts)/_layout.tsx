@@ -5,18 +5,12 @@ import { StatusBar } from 'expo-status-bar'
 
 const PostLayout = () => {
   return (
-    <>
-      <Stack>
-        <Stack.Screen
-          name="view-post"
-          options= {{
-            headerShown: false
-          }}
-        />
-      </Stack>
-
-      {/* <StatusBar backgroundColor='#161622' style='light'/>  */}
-    </>
+    <Stack screenOptions={{ headerShown: false }}>
+      {/* If you have an index screen */}
+      {/* <Stack.Screen name="index" /> */}
+      <Stack.Screen name="view-post" />
+      <Stack.Screen name="edit-post" />
+    </Stack>
   )
 }
 

@@ -10,8 +10,9 @@ import { FIREBASE_AUTH, FIREBASE_DB } from '@/firebaseConfig'
 import CustomButton from '../../components/CustomButton';
 import tw from '../../twrnc-config'
 import ProfileItem from '@/components/ProfileItem'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const Profile = () => {
+const ProfileInfo = () => {
   // user data state
   const [userData, setUserData] = useState<any>({
     username: '',
@@ -53,14 +54,11 @@ const Profile = () => {
 
   return (
     <SafeAreaView style={tw`bg-purple-200 h-full flex-1`}>
-      {/* <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      /> */}
-
       {/* Profile header */}
-      <View style={tw`bg-purple py-4 px-4`}>
+      <View style={tw`bg-primary py-4 px-4 flex-row items-center mb-4`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`mr-3`}>
+          <FontAwesome name='arrow-left' size={24} color='white' />
+        </TouchableOpacity>
         <Text style={tw`text-white text-3xl font-bold`}>Profile Information</Text>
       </View>
 
@@ -72,10 +70,6 @@ const Profile = () => {
             }}
             style={tw`w-35 h-35 rounded-full bg-gray-300 mb-4`}
           />
-
-          {/* <Text style={tw`text-while text-xl mt-2 font-bold`}>
-            {userData.username || 'Your Name'}
-          </Text> */}
 
           <ProfileItem
             icon={<FontAwesome name='user' size={20} color='black' />}
@@ -114,4 +108,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfileInfo

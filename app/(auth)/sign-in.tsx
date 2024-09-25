@@ -22,9 +22,9 @@ const SignIn = () => {
   const submit = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth,email, password);
+      const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response);
-      alert('Check your emails!');
+      Alert.alert('Welcome!', 'You have successfully logged in.');
       router.push('/(tabs)/home');
     } catch (error: any) {
       console.log(error);
@@ -72,6 +72,19 @@ const SignIn = () => {
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />
+
+          {/* Forgot your password link */}
+          <View style={tw`justify-center pt-5 flex-row gap-2`}>
+            <Text style={tw`text-lg text-gray-100 font-pregular`}>
+              Forgot your password?
+            </Text>
+
+            <Link href="../(profile)/forgot-password" asChild>
+              <Text style={tw`text-lg font-semibold text-secondary-100`}>
+                Reset Password
+              </Text>
+            </Link>
+          </View>
 
           <View style={tw`justify-center pt-5 flex-row gap-2`}>
             <Text style={tw`text-lg text-gray-100 font-pregular`}>

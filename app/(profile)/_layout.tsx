@@ -1,23 +1,16 @@
-import { View, Text } from 'react-native'
-import { Stack, Tabs } from 'expo-router'
-import React from 'react'
-import { StatusBar } from 'expo-status-bar'
+import { Stack } from 'expo-router';
+import React from 'react';
 
 const ProfileLayout = () => {
-    return (
-        <>
-            <Stack
-                screenOptions={{
-                    headerShown: false,
-                }}
-            >
-                <Stack.Screen name="edit-profile" />
-                <Stack.Screen name="profile-info" />
-            </Stack>
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      {/* If you have an index screen */}
+      {/* <Stack.Screen name="index" /> */}
+      <Stack.Screen name="profile-info" />
+      <Stack.Screen name="edit-profile" />
+      <Stack.Screen name="forgot-password" />
+    </Stack>
+  );
+};
 
-            {/* <StatusBar backgroundColor='#161622' style='light'/>  */}
-        </>
-    )
-}
-
-export default ProfileLayout
+export default ProfileLayout;

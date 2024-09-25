@@ -1,5 +1,5 @@
 // Home page of the app
-import { View, Text, ScrollView, Image, TextInput, FlatList, TouchableOpacity, StatusBar, Modal, Alert } from 'react-native'
+import { View, Text, ScrollView, Image, TextInput, FlatList, TouchableOpacity, StatusBar, Modal, Alert, Keyboard } from 'react-native'
 import React, { useState, useEffect, useCallback } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFocusEffect, useRouter } from 'expo-router'
@@ -16,7 +16,6 @@ interface Post {
   author: string;
   imageUrl: string;
   category: string;
-  // category: 'Inspiration' | 'Learning & Development' | 'Entertainment' | 'Health & Wellness';
   date: string;
   userId: string; // needed to identify the user
 }
@@ -66,6 +65,7 @@ const Home = () => {
       const allPosts: Post[] = [];
       for (const userDoc of userSnapshot.docs) {
         const userId = userDoc.id;
+        const userData = userDoc.data();
         const postsColtRef = collection(FIREBASE_DB, 'users', userId, 'posts');
         const postSnapshot = await getDocs(postsColtRef);
 
@@ -74,7 +74,7 @@ const Home = () => {
           allPosts.push({
             id: postDoc.id,
             title: postData.title,
-            author: postData.author || username,
+            author: userData.username || 'Unknown Author',
             imageUrl: postData.imageUrl,
             category: postData.category,
             date: postData.createdAt,
@@ -95,13 +95,14 @@ const Home = () => {
     }, [])
   );
 
-  // Filtered articles based on the selected category
-  const filteredPost = selectedCategory
-    ? posts
-      .filter(posts => posts.category === selectedCategory)
+  // Filtered articles based on the selected category and search
+  const filteredPost = posts
+      .filter(posts => 
+       (!selectedCategory || posts.category === selectedCategory) &&
+       (!search || posts.title.toLocaleLowerCase().includes(search.toLowerCase()))
+      )
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // new artciles come up first on the list
-    : posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
+  
   // handle logout functionality
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -134,13 +135,16 @@ const Home = () => {
       </View>
 
       {/* Search Bar */}
-      <View style={tw`px-2 mt-6`}>
+      <View style={tw`flex-row items-center px-2 mt-6 bg-gray-200 rounded-full`}>
         <TextInput
           placeholder="Search"
-          style={tw`bg-gray-200 rounded-full px-4 py-2 text-lg`}
+          style={tw`flex-1 px-4 py-2 text-lg`}
           value={search}
           onChangeText={text => setSearch(text)}
+          autoFocus={false}
+          blurOnSubmit={false}
         />
+        <FontAwesome name='search' size={20} color='gray' style={tw`mr-4`} />
       </View>
     </View>
   );
@@ -189,7 +193,7 @@ const Home = () => {
           <TouchableOpacity
             onPress={() => router.push({
               pathname: '../(posts)/view-post', params:
-                { postId: item.id, userId: auth.currentUser?.uid }
+                { postId: item.id, userId: item.userId }
             })}
           >
             <View style={tw`flex-row bg-white mx-4 p-4 rounded-lg mb-4 shadow-md`}>
@@ -217,7 +221,13 @@ const Home = () => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={tw`px-4 py-2 rounded-full ${selectedCategory === item ? 'bg-purple' : 'bg-gray-300'} mx-2 mb-6`}
-                  onPress={() => setSelectedCategory(item)}
+                  onPress={ () => {
+                    if (selectedCategory === item) {
+                      setSelectedCategory('');
+                    } else {
+                      setSelectedCategory(item);
+                    }
+                  }}
                 >
                   <Text style={tw`${selectedCategory === item ? 'text-white' : 'text-black'} font-semibold`}>
                     {item}
