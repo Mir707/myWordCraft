@@ -28,7 +28,7 @@ const SignIn = () => {
       router.push('/(tabs)/home');
     } catch (error: any) {
       console.log(error);
-      alert('Sign in failed: ' + error.message);
+      Alert.alert('Sign in failed.', 'Please check your email and password.');
     } finally {
       setLoading(false);
     }

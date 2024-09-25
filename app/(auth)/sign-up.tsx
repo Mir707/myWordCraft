@@ -23,67 +23,76 @@ const SignUp = () => {
   const auth = FIREBASE_AUTH;
   const router = useRouter(); // nagivagte to other pages
 
-    // send email using EmailJS
-    const sendEmail = async (userEmail: string, userName: string, userPassword: string) => {
-      try {
-        const templateParams = {
-          to_email: userEmail,
-          to_name: userName,
-          username: userName,
-          password: userPassword,
-        };
-  
-        await emailjs.send('service_gl03mr3', 'template_nkw0v1q', templateParams, 'QKNgjCB6BbXnGI1Cj');
-        console.log('Email sent successfully');
-      } catch (error) {
-        console.error('Error sending email:', error);
-      }
+// send email using EmailJS
+const sendEmail = async (userEmail: string, userName: string, userPassword: string) => {
+  try {
+    const templateParams = {
+      to_email: userEmail,
+      to_name: userName,
+      username: userName,
+      password: userPassword,
+      email: userEmail
     };
 
-  // function to submit the data to firebase auth
-  const submit = async () => {
-    setIsSubmitting(true); // start loading state
-    try {
-      // Firebase sign-up
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
+    // Make sure to use your actual private key here
+    // const privateKey = 'your-private-key'; // Replace with your EmailJS private key
 
-      // update profile with username
-      if (user) {
-        await updateProfile(user, {
-          displayName: username,
-        });
-      }
+    await emailjs.send('service_gl03mr3', 'template_nkw0v1q', templateParams, 'QKNgjCB6BbXnGI1Cj');
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
 
-      // create firestore document
-      const userDocRef = doc(FIREBASE_DB, 'users', user.uid);
-      await setDoc(userDocRef, {
-        username: username,
-        email: email,
-        phone: '',
-        dob: '',
-        gender:'',
-        profilePicture: '',
-        createdAt: new Date().toISOString(),
-        userId: user.uid
+
+// function to submit the data to firebase auth
+const submit = async () => {
+  setIsSubmitting(true); // start loading state
+  try {
+    // Firebase sign-up
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    // update profile with username
+    if (user) {
+      await updateProfile(user, {
+        displayName: username,
       });
-
-      // message to succesfully create
-      Alert.alert('Success', 'Account successfully created!');
-      console.log('User account created', user);
-      router.push('/(tabs)/home');
-
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'An unexpected error occurred.');
-      console.error('Error', error);
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+
+    // create firestore document
+    const userDocRef = doc(FIREBASE_DB, 'users', user.uid);
+    await setDoc(userDocRef, {
+      username: username,
+      email: email,
+      phone: '',
+      dob: '',
+      gender:'',
+      profilePicture: '',
+      createdAt: new Date().toISOString(),
+      userId: user.uid
+    });
+
+    // Send the email with the details
+    await sendEmail(email, username, password);
+
+    // message to succesfully create
+    Alert.alert('Success', 'Account successfully created! An email with your details has been sent.');
+    console.log('User account created', user);
+    router.push('/(tabs)/home');
+
+  } catch (error: any) {
+    Alert.alert('Error', error.message || 'An unexpected error occurred.');
+    console.error('Error', error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <SafeAreaView style={tw`bg-primary h-full`}>
