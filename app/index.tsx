@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Image, ScrollView } from 'react-native';
+import { Text, View, Image, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {  Href, router } from 'expo-router';
+import {  Href, router, useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
-import tw from '../twrnc-config';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
+import { GoogleSignin, User , statusCodes } from '@react-native-google-signin/google-signin';
 
+import tw from '../twrnc-config';
 import { images } from '../constants';
+import { FIREBASE_AUTH } from '../firebaseConfig';
 import CustomButton from '../components/CustomButton';
 
 const App: React.FC = () => {
@@ -51,17 +53,6 @@ const App: React.FC = () => {
             title="Continue with Email"
             handlePress={() => router.push('/sign-in' as Href)}
             containerStyles="w-full mt-7"
-          />
-
-          {/* Continue with Google button */}
-          <CustomButton
-            title="Continue with Google"
-            handlePress={() => {}}
-            containerStyles="w-full mt-3 mb-5 bg-white border border-gray-300 flex-row justify-center items-center"
-            textStyles="text-black"
-            icon={
-              <AntDesign name="google" size={24} color="black" style={{ marginRight: 8 }} />
-            }
           />
         </View>
       </ScrollView>
